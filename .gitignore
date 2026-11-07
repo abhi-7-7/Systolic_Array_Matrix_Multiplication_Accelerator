@@ -1,0 +1,8 @@
+# Simulation binaries and waveforms
+*.vvp
+*.vcd
+*.fst
+
+# OS generated files
+.DS_Store
+Thumbs.db
