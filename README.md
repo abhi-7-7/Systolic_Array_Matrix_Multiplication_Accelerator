@@ -1,4 +1,4 @@
-# Systolic-array matrix multiplier: Half 1 (RTL + testbenches)
+# Systolic-array matrix multiplier: (RTL + testbenches)
 
 N x N output-stationary systolic array computing C = A x B with signed fixed-point operands.
 Defaults: N = 3, DATA_W = 8 (signed), ACC_W = 20 (signed accumulator).
@@ -42,7 +42,7 @@ Defaults: N = 3, DATA_W = 8 (signed), ACC_W = 20 (signed accumulator).
 Worst case is (-128) * (-128) = 16384 in every term, so the largest sum is N * 16384.
 3x3 needs 17 signed bits, 4x4 needs 18. The default ACC_W = 20 leaves headroom.
 
-## Not in Half 1
+## To be done 
 
 Sequential baseline, cycle/throughput analysis, synthesis (resources + max frequency),
 block diagram, technical report, demo script.
