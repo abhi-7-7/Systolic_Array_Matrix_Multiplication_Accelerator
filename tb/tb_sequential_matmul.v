@@ -28,7 +28,8 @@ module tb_sequential_matmul;
     reg signed [DATA_W-1:0] A [0:N*N-1];
     reg signed [DATA_W-1:0] B [0:N*N-1];
     integer C_ref [0:N*N-1];
-    integer checks, errors, busy_cycles, seed, n, r, c;
+    integer checks, errors, busy_cycles, seed, n, r, c, errors_before;
+    reg verbose;
 
     always @(posedge clk)
         if (busy) busy_cycles = busy_cycles + 1;
@@ -129,7 +130,7 @@ module tb_sequential_matmul;
                                  id, rr, cc, got, C_ref[rr*N + cc]);
                     end
                 end
-            if (!bad)
+            if (!bad && verbose)
                 $display("  T%0d ok   (%0d elements match, busy %0d cycles)",
                          id, N*N, busy_cycles);
         end
@@ -169,6 +170,8 @@ module tb_sequential_matmul;
         checks = 0;
         errors = 0;
         busy_cycles = 0;
+        errors_before = 0;
+        verbose = 1'b1;
         seed = 32'h51E0A1;
         rst = 1'b1;
         start = 1'b0;
@@ -217,10 +220,15 @@ module tb_sequential_matmul;
         run_test(6);
 
         $display("T7: 200 random matrix pairs");
+        errors_before = errors;
+        verbose = 1'b0;
         for (n = 0; n < 200; n = n + 1) begin
             fill_random;
             run_test(7);
         end
+        verbose = 1'b1;
+        if (errors == errors_before)
+            $display("  T7 ok   (200 random matrix pairs match)");
 
         $display("T8: writes while busy are ignored");
         for (r = 0; r < N*N; r = r + 1) begin
