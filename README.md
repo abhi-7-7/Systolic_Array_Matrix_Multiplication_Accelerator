@@ -1,7 +1,18 @@
 # Systolic-array matrix multiplier: (RTL + testbenches)
 
-N x N output-stationary systolic array computing C = A x B with signed fixed-point operands.
-Defaults: N = 3, DATA_W = 8 (signed), ACC_W = 20 (signed accumulator).
+N x N output-stationary systolic array computing C = A x B. Defaults: N = 3,
+signed 8-bit operands, signed 20-bit accumulators. The current arithmetic uses
+signed integer values (fixed point with zero fractional bits; scale = 1).
+
+## Architecture diagrams
+
+See [ARCHITECTURE.md](./ARCHITECTURE.md) for the shared host protocol,
+systolic PE dataflow, controller states, and sequential baseline diagrams.
+
+## Simulation report and demo
+
+See [TECHNICAL_REPORT.md](./TECHNICAL_REPORT.md) for verification details,
+cycle-based results, iCE40 tool estimates, limitations, and the demo procedure.
 
 ## Files
 
@@ -18,6 +29,7 @@ Defaults: N = 3, DATA_W = 8 (signed), ACC_W = 20 (signed accumulator).
     tb/tb_sequential_matmul.v    sequential baseline vs reference model and latency checks
     tb/tb_matmul_comparison.v    side-by-side latency and throughput comparison
     run.sh                       compile and run all four testbenches
+    scripts/run_ice40_estimates.sh  Yosys/nextpnr estimates for iCE40 HX8K
 
 ## Module hierarchy
 
@@ -53,8 +65,8 @@ or hardware-throughput results.
   N^3 + 1 cycles (28 for 3x3, 65 for 4x4), excluding matrix loading
 - Both designs use the same one-element-per-clock matrix write interface;
   loading both matrices takes 2N^2 cycles when included
-- The comparison includes one start-acceptance cycle in compute latency and
-  reports end-to-end cycles as loading + start acceptance + compute
+- Compute counts are the `busy` interval (`CLEAR` plus computation); the
+  separate start-acceptance cycle is included in end-to-end counts
 
 The comparison testbench measures these cycle counts for both designs using
 the same input matrices. At its assumed 100 MHz clock (10 ns period), its
@@ -78,7 +90,13 @@ hardware measurements.
 Worst case is (-128) * (-128) = 16384 in every term, so the largest sum is N * 16384.
 3x3 needs 17 signed bits, 4x4 needs 18. The default ACC_W = 20 leaves headroom.
 
-## Still to do
+## FPGA tool estimate (no board required)
 
-FPGA synthesis and timing (resources + maximum frequency), block diagram,
-technical report, demo script.
+Install Yosys and nextpnr-ice40, then run:
+
+    brew install yosys nextpnr-ice40
+    bash scripts/run_ice40_estimates.sh
+
+This performs target-specific estimates for iCE40 HX8K-CT256. See
+[TECHNICAL_REPORT.md](./TECHNICAL_REPORT.md) for the results and limitations.
+Physical board programming/testing remains optional and has not been performed.

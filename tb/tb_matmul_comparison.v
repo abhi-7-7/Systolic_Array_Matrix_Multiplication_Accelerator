@@ -198,7 +198,7 @@ module tb_matmul_comparison;
         $display("");
         $display("All output elements checked against the same integer reference.");
         $display("Matrix loading: %0d cycles for both designs", load_cycles);
-        $display("Compute (includes start acceptance):");
+        $display("Compute (busy cycles: CLEAR + RUN; excludes start acceptance):");
         $display("  Systolic:   %0d cycles, %0.1f ns, %0.3f million matrix multiplications/s",
                  systolic_busy_cycles, systolic_busy_cycles*CLOCK_PERIOD_NS,
                  systolic_compute_mmatmuls);
