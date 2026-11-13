@@ -3,6 +3,11 @@
 N x N output-stationary systolic array computing C = A x B with signed fixed-point operands.
 Defaults: N = 3, DATA_W = 8 (signed), ACC_W = 20 (signed accumulator).
 
+## Architecture diagrams
+
+See [ARCHITECTURE.md](./ARCHITECTURE.md) for the shared host protocol,
+systolic PE dataflow, controller states, and sequential baseline diagrams.
+
 ## Files
 
     rtl/mac_unit.v               combinational multiply-accumulate
@@ -80,5 +85,5 @@ Worst case is (-128) * (-128) = 16384 in every term, so the largest sum is N * 1
 
 ## Still to do
 
-FPGA synthesis and timing (resources + maximum frequency), block diagram,
-technical report, demo script.
+FPGA synthesis and timing (resources + maximum frequency), technical report,
+demo procedure.
