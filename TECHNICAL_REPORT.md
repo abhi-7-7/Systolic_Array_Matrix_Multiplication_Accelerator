@@ -61,8 +61,8 @@ the busy interval, but exclude reading the result matrix.
 Both designs load one matrix element per clock through the shared write port.
 Loading A and B therefore takes 18 cycles for 3x3 and 32 cycles for 4x4.
 End-to-end cycles add the start-acceptance cycle and the compute interval.
-The speedup is the sequential compute-cycle count divided by the systolic
-compute-cycle count.
+The cycle speedup is the sequential compute-cycle count divided by the
+systolic compute-cycle count.
 
 The systolic controller spends one cycle in `CLEAR`, then streams operands
 over `3N - 2` run cycles. The sequential baseline spends one clear cycle and
@@ -90,6 +90,21 @@ The estimated critical clock path runs from the systolic cycle counter `t` to
 a PE accumulator (`c_flat`) in the systolic design, and from the sequential
 index logic (`row_idx`/`k_idx`) to the C result memory in the baseline. All four
 estimates miss the requested 100 MHz target.
+
+### Latency at estimated Fmax
+
+Combining each design's compute cycles with its own estimated Fmax gives the
+following compute latencies. These are derived from tool estimates, not
+measured on hardware.
+
+| Matrix size | Systolic | Sequential | Wall-clock speedup |
+|---|---:|---:|---:|
+| 3x3 | 8 cycles @ 65.89 MHz = 121.4 ns | 28 cycles @ 50.35 MHz = 556.1 ns | 4.58x |
+| 4x4 | 11 cycles @ 63.09 MHz = 174.4 ns | 65 cycles @ 50.29 MHz = 1292.5 ns | 7.41x |
+
+The cycle speedup (3.500x and 5.909x) compares cycle counts only. The
+wall-clock speedup also accounts for the systolic design's higher estimated
+Fmax, so the two figures should not be used interchangeably.
 
 The initially considered iCE40 UP5K-SG48 was not suitable for placing the full
 top level: it needs 43 I/O pins while SG48 provides 39, and the 3x3 systolic
