@@ -20,7 +20,7 @@ module systolic_matmul_top #(
     input  wire                     clk,
     input  wire                     rst,        // synchronous, active high (FSM only)
 
-    // ---- host write port: one element per clock; ignored while busy
+    // ---- host write port: one element per clock; ignored while busy or out of range
     input  wire                     wr_en,
     input  wire                     wr_sel,     // 0 -> A, 1 -> B
     input  wire [IDX_W-1:0]         wr_row,
@@ -55,7 +55,8 @@ module systolic_matmul_top #(
 
     matrix_data_interface #(.N(N), .DATA_W(DATA_W), .IDX_W(IDX_W), .T_W(T_W)) u_mdi (
         .clk     (clk),
-        .wr_en   (wr_en && !busy),            // matrices are frozen while computing
+        .wr_en   (wr_en && !busy &&           // matrices are frozen while computing
+                  (wr_row < N) && (wr_col < N)),
         .wr_sel  (wr_sel),
         .wr_row  (wr_row),
         .wr_col  (wr_col),
