@@ -29,6 +29,7 @@ cycle-based results, iCE40 tool estimates, limitations, and the demo procedure.
     tb/tb_sequential_matmul.v    sequential baseline vs reference model and latency checks
     tb/tb_matmul_comparison.v    side-by-side latency and throughput comparison
     run.sh                       compile and run all four testbenches
+    systolic_matmul.gtkw         GTKWave view: control signals, input streams, PE accumulators
     scripts/run_ice40_estimates.sh  Yosys/nextpnr estimates for iCE40 HX8K
 
 ## Module hierarchy
@@ -49,7 +50,11 @@ signed multiplier-accumulator to compute each output in row-major order.
 
     ./run.sh          # 3x3
     ./run.sh 4        # 4x4
-    gtkwave systolic_matmul.vcd      # waveform of the demo test (T1)
+    gtkwave systolic_matmul.vcd systolic_matmul.gtkw   # waveform of the demo test (T1)
+
+The saved view shows `clk`, `start`, `busy`, `done`, the controller state and
+cycle counter, the skewed A/B input streams, and a few PE accumulators. It
+targets the default 3x3 build; for `./run.sh 4` the bus widths differ.
 
 The final test run compares both designs side by side using the same random
 matrices and 100 MHz simulation clock assumption. It checks both results against
