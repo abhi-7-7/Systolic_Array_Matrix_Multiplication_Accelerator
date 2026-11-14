@@ -1,0 +1,30 @@
+[*] GTKWave save file for the T1 demo in tb_systolic_matmul.
+[*] Usage (after ./run.sh): gtkwave systolic_matmul.vcd systolic_matmul.gtkw
+[dumpfile] "systolic_matmul.vcd"
+[savefile] "systolic_matmul.gtkw"
+[sst_expanded] 1
+[signals_width] 300
+@200
+-Control
+@28
+tb_systolic_matmul.clk
+tb_systolic_matmul.rst
+tb_systolic_matmul.start
+tb_systolic_matmul.busy
+tb_systolic_matmul.done
+@22
+tb_systolic_matmul.dut.u_ctrl.state[1:0]
+@24
+tb_systolic_matmul.dut.t[3:0]
+@200
+-Streams
+@22
+tb_systolic_matmul.dut.a_stream[23:0]
+tb_systolic_matmul.dut.b_stream[23:0]
+@200
+-PE accumulators
+@420
+tb_systolic_matmul.dut.u_array.g_row[0].g_col[0].u_pe.acc[19:0]
+tb_systolic_matmul.dut.u_array.g_row[0].g_col[1].u_pe.acc[19:0]
+tb_systolic_matmul.dut.u_array.g_row[1].g_col[1].u_pe.acc[19:0]
+tb_systolic_matmul.dut.u_array.g_row[2].g_col[2].u_pe.acc[19:0]
