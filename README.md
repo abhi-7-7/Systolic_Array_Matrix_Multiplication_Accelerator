@@ -79,8 +79,10 @@ reported results are:
 | 4 | Systolic | 11 | 110 ns | 9.091 M matrix multiplies/s | 44 | 440 ns |
 | 4 | Sequential | 65 | 650 ns | 1.538 M matrix multiplies/s | 98 | 980 ns |
 
-Compute speedup, calculated as sequential compute cycles divided by systolic
-compute cycles, is 3.500x for 3x3 and 5.909x for 4x4. End-to-end counts include
+Compute cycle speedup, calculated as sequential compute cycles divided by
+systolic compute cycles, is 3.500x for 3x3 and 5.909x for 4x4. At each
+design's estimated iCE40 Fmax, the wall-clock speedup is 4.58x and 7.41x; see
+[TECHNICAL_REPORT.md](./TECHNICAL_REPORT.md). End-to-end counts include
 the common `2N^2` load cycles and one start-acceptance cycle. Rates are derived
 from simulated cycles and the assumed clock; they are not FPGA timing or
 hardware measurements.
