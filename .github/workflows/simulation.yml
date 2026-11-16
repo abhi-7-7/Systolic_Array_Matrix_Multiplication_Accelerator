@@ -1,0 +1,57 @@
+# Run every testbench on each push and pull request.
+#
+name: Simulation
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  simulate:
+    name: Simulate ${{ matrix.n }}x${{ matrix.n }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        n: [3, 4]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Icarus Verilog
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y iverilog
+          iverilog -V | head -n 1
+
+      - name: Run testbenches
+        run: |
+          set -o pipefail
+          ./run.sh ${{ matrix.n }} 2>&1 | tee sim.log
+
+      - name: Check simulation results
+        run: |
+          if grep -n "FAIL" sim.log; then
+            echo "::error::One or more checks failed for N=${{ matrix.n }}"
+            exit 1
+          fi
+          for msg in "PE TESTBENCH PASSED" "ALL TESTS PASSED" "COMPARISON PASSED"; do
+            if ! grep -q "$msg" sim.log; then
+              echo "::error::Missing '$msg' for N=${{ matrix.n }}"
+              exit 1
+            fi
+          done
+          passed=$(grep -c "ALL TESTS PASSED" sim.log)
+          if [ "$passed" -ne 2 ]; then
+            echo "::error::Expected 2 'ALL TESTS PASSED' lines, found $passed"
+            exit 1
+          fi
+          echo "All testbenches passed for N=${{ matrix.n }}"
+
+      - name: Upload simulation log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sim-log-n${{ matrix.n }}
+          path: sim.log
