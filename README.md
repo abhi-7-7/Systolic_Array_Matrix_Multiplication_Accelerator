@@ -112,3 +112,8 @@ Install Yosys and nextpnr-ice40, then run:
 This performs target-specific estimates for iCE40 HX8K-CT256. See
 [TECHNICAL_REPORT.md](./TECHNICAL_REPORT.md) for the results and limitations.
 Physical board programming/testing remains optional and has not been performed.
+
+---
+## Video 
+https://drive.google.com/file/d/1cs8wJ66PBwmVfLD2F23jKSgvplLqC-GR/view?usp=sharing 
+---
