@@ -28,9 +28,13 @@ cycle-based results, iCE40 tool estimates, limitations, and the demo procedure.
     tb/tb_systolic_matmul.v      whole accelerator vs reference model, latency check, cycle trace
     tb/tb_sequential_matmul.v    sequential baseline vs reference model and latency checks
     tb/tb_matmul_comparison.v    side-by-side latency and throughput comparison
+    tb/tb_mac_unit.v             MAC unit: signed corner cases + exhaustive 8-bit operand sweep
+    tb/tb_systolic_ctrl.v        controller FSM: state sequence, 3N - 1 busy cycles, start and reset
     run.sh                       compile and run all four testbenches
     systolic_matmul.gtkw         GTKWave view: control signals, input streams, PE accumulators
     scripts/run_ice40_estimates.sh  Yosys/nextpnr estimates for iCE40 HX8K
+    scripts/run_unit_tests.sh    compile and run the MAC and controller unit tests
+    .github/workflows/simulation.yml  CI: runs all testbenches for N = 3 and 4 on every push and PR
 
 ## Module hierarchy
 
@@ -51,6 +55,7 @@ signed multiplier-accumulator to compute each output in row-major order.
     ./run.sh          # 3x3
     ./run.sh 4        # 4x4
     gtkwave systolic_matmul.vcd systolic_matmul.gtkw   # waveform of the demo test (T1)
+    bash scripts/run_unit_tests.sh     # MAC + controller unit tests (add 4 for N = 4)
 
 The saved view shows `clk`, `start`, `busy`, `done`, the controller state and
 cycle counter, the skewed A/B input streams, and a few PE accumulators. It

@@ -49,6 +49,9 @@ jobs:
           fi
           echo "All testbenches passed for N=${{ matrix.n }}"
 
+      - name: Run unit tests (MAC and controller)
+        run: bash scripts/run_unit_tests.sh ${{ matrix.n }}
+
       - name: Upload simulation log
         if: always()
         uses: actions/upload-artifact@v4
